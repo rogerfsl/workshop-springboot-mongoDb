@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.IncorrectUpdateSemanticsDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.rogerlopes.workshopmongo.domain.User;
@@ -36,8 +37,19 @@ public class UserSevice {
 		repository.deleteById(id);
 	}
 
+	public User update (User obj) {
+		User newObj = findById(obj.getId());
+		UpdateData(newObj, obj);
+		return repository.save(newObj);
+	}
 
 	
+	private void UpdateData(User newObj, User obj) {
+		newObj.setName(obj.getName());
+		newObj.setEmail(obj.getEmail());
+		
+	}
+
 	public User fromDto (UserDTO objDto) {
 		return new User (objDto.getId(), objDto.getName(), objDto.getEmail());
 	}
