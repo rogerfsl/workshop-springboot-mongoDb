@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.objenesis.instantiator.basic.NewInstanceInstantiator;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,8 +16,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.rogerlopes.workshopmongo.domain.User;
 import com.rogerlopes.workshopmongo.dto.UserDTO;
 import com.rogerlopes.workshopmongo.services.UserSevice;
-
-import jakarta.servlet.Servlet;
 
 @RestController
 @RequestMapping(value = "/users")
@@ -54,5 +51,11 @@ public class UserResource {
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		// vai pegar o endereço do novo objeto que foi inserido.
 		return ResponseEntity.created(uri).build();// vai retornar uma resposta vazia com o código 201 e com o cabeçalho do novo recurso criado.
+	}
+	
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+ 	public ResponseEntity<Void> delete(@PathVariable String id) {
+		service.delete(id);
+		return ResponseEntity.noContent().build();
 	}
 }
